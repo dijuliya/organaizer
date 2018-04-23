@@ -1,0 +1,402 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>
+        {{title}}
+        <button type="button" class="large material-icons" data-toggle="modal" data-target="#addModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>add</button>
+        <button type="button" class="large material-icons" data-toggle="modal" data-target="#addModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>cloud_download</button>
+      </h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col s1">№</div>
+            <div class="col s2">Category</div>
+            <div class="col s4">Content</div>
+            <div class="col s2">Done</div>
+            <div class="col s2">Importance</div>
+            <div class="col s1">Actions</div>
+          </div>
+        </li>
+        <li class="list-group-item text-center" *ngIf="taskofmonth.length == 0">
+          No data
+        </li>
+        <li class="list-group-item" *ngFor="let item of taskofmonth">
+          <div class="row">
+            <div class="col s1">{{item.id}}</div>
+            <div class="col s2">{{item.name}}</div>
+            <div class="col s4">{{item.content}}</div>
+            <div class="col s2">{{item.isDone}}</div>
+            <div class="col s2">{{item.iname}}</div>
+            <div class="col s1">
+              <div class="btn-group" role="group">
+               <!-- <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#editModal" (click)="loadTaskofmonthHistory(item)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>-->
+                <button type="button" class="large material-icons" data-toggle="modal" data-target="#removeModal" (click)="removeTaskofmonth(item)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>delete_forever</button>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div id="addModal" class="modal" >
+<div class="modal-content" >
+  <form>
+    <div class="modal">
+      <div class="modal">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearCurrentTaskofmonth()"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add Taskofmonth</h4>
+      </div>
+      <div class="modal" >
+        <div class="form-group">
+          <label for="addModalContent">Дата создания</label>
+          <input type="text" class="form-control" id="addModalContent" placeholder="Createdate" name="content" [(ngModel)]="currentTaskofmonth.content">
+        </div>
+       <!-- <div class="form-group">
+          <label for="addModalTitle">Тема</label>
+          <input type="text" class="form-control" id="addModalTitle" placeholder="Title" name="title" [(ngModel)]="currentTaskofmonth.title">
+        </div>
+        &lt;!&ndash;          <div class="form-group">
+                    <label for="addModalOrganization">Organization</label>
+                    <input type="" class="form-control" id="addModalOrganization" placeholder="Organization" name="organization_id" [(ngModel)]="currentTaskofmonth.organization_id">
+                  </div>&ndash;&gt;
+        <div>
+          <label for="addModalOrganization">Организация</label>
+          <div>
+            <input type="number" class="form-control" id="addModalOrganization" placeholder="OrganizationId" name="organization_id" [(ngModel)]="currentTaskofmonth.organization.id">
+          </div>
+        </div>
+
+
+        <div>
+          <label for="addModalPriority">Приоритет</label>
+          <div>
+            <input type="number" class="form-control" id="addModalPriority" placeholder="PriorityId" name="priority_id" [(ngModel)]="currentTaskofmonth.priority.id">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="addModalUser">Пользователь</label>
+          <div>
+            <input type="text" class="form-control" id="addModalUser" placeholder="UserId" name="user_id" [(ngModel)]="currentTaskofmonth.user.id">
+          </div>
+          &lt;!&ndash;<input type="text" class="form-control" id="addModalUser" placeholder="User" name="user" [(ngModel)]="currentTaskofmonth.user">&ndash;&gt;
+        </div>
+
+        <div class="form-group">
+          <label for="addModalAdmin">Администратор</label>
+          <div>
+            <input disabled="true" value = "admin" type="text" class="form-control" id="addModalAdmin" placeholder="Admin" name="admin" [(ngModel)]="currentTaskofmonth.admin.id">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addTaskofmonth()">Save</button>-->
+      </div>
+    </div><!-- /.modal-content -->
+  </form>
+</div><!-- /.modal-dialog -->
+</div>
+
+
+
+
+
+<!-- Modal Structure -->
+<div id="taskEditModal" class="modal">
+  <div class="modal-content">
+    <h4>Wish Details</h4>
+    <div class="row">
+      <form class="col s12" #wishEditForm="ngForm">
+        <div class="row">
+          <div class="input-field col s12">
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Name"
+              required
+              minlength="5"
+              #name="ngModel"
+              [(ngModel)]="taskofmonth.name"
+            >
+            <label for="name">Wish Name</label>
+            <div *ngIf="name.invalid && (name.dirty || name.touched)">
+              <p *ngIf="name.errors?.required">Name field is required</p>
+              <p *ngIf="name.errors?.minlength">Name field is too short (must be
+                {{name.errors?.minlength?.requiredLength}} symbols)</p>
+            </div>
+          </div>
+        </div>
+        <!--<div class="row">
+          <div class="input-field col s12">
+            <input
+              id="nonce"
+              name="nonce"
+              type="text"
+              placeholder="Nonce"
+              required
+              minlength="5"
+              #nonce="ngModel"
+              [(ngModel)]="wish.nonce"
+            >
+            <label for="nonce">Wish Nonce</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <textarea
+              id="description"
+              name="description"
+              class="materialize-textarea"
+              required
+              minlength="5"
+              #description="ngModel"
+              [(ngModel)]="wish.description"
+            ></textarea>
+            <label for="description">Wish Description</label>
+          </div>
+        </div>-->
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-action waves-effect waves-green btn-flat" (click)="onCancel()">Cancel</button>
+      <button class="modal-action waves-effect waves-green btn-flat" (click)="onSave()"
+              [disabled]="wishEditForm.form.invalid">Save
+      </button>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+<div id="addModal" class="modal">
+  <div class="modal-content">
+    <h4>Wish Details</h4>
+    <div class="row">
+    <form class="col s12" #addModal="ngForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearCurrentTaskofmonth()"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Add Taskofmonth</h4>
+        </div>
+        <div class="modal-body" >
+          <div class="form-group" aria-readonly="true">
+            <label for="addModalContent">Содержание</label>
+            <input type="text" class="form-control" id="addModalContent" placeholder="Content" name="сontent" [(ngModel)]="currentTaskofmonth.content">
+          </div>
+          <div class="form-group">
+            <label for="addModalIsDone">Выолнено</label>
+            <input type="checkbox" class="form-control" id="addModalIsDone" placeholder="IsDone" name="isDone" [(ngModel)]="currentTaskofmonth.isDone">
+          </div>
+          &lt;!&ndash;          <div class="form-group">
+                      <label for="addModalOrganization">Organization</label>
+                      <input type="" class="form-control" id="addModalOrganization" placeholder="Organization" name="organization_id" [(ngModel)]="currentTaskofmonth.organization_id">
+                    </div>&ndash;&gt;
+          <div>
+            <label for="addModalCategoty">Категория</label>
+            <div>
+              <input type="number" class="form-control" id="addModalCategoty" placeholder="Categoty" name="category_id" [(ngModel)]="currentTaskofmonth.name">
+            </div>
+            &lt;!&ndash;<select id="addModalOrganization" ><option></option>&ndash;&gt;
+            &lt;!&ndash;<option name>Рога и копыта</option>&ndash;&gt;
+            &lt;!&ndash;<option>Тестовая</option>&ndash;&gt;
+            &lt;!&ndash;<option>Первая</option>&ndash;&gt;
+            &lt;!&ndash;<option>Вторя</option>&ndash;&gt;
+            &lt;!&ndash;</select>&ndash;&gt;
+          </div>
+
+&lt;!&ndash;
+          <div>
+            <label for="addModalInterval">Интервал</label>
+            <div>
+              <input type="number" class="form-control" id="addModalInterval" placeholder="IntervalId" name="interval_id" [(ngModel)]="currentTaskofmonth.iname">
+            </div>
+            &lt;!&ndash;<select id="addModalPriority" ><option></option>&ndash;&gt;
+            &lt;!&ndash;<option name>Низкий</option>&ndash;&gt;
+            &lt;!&ndash;<option>Средний</option>&ndash;&gt;
+            &lt;!&ndash;<option>Высокий</option>&ndash;&gt;
+            &lt;!&ndash;</select>&ndash;&gt;
+          </div>&ndash;&gt;
+
+          <div class="form-group">
+            <label for="addModalImportance">Пользователь</label>
+            <div>
+              <input type="text" class="form-control" id="addModalImportance" placeholder="ImportanceId" name="importance_id" [(ngModel)]="currentTaskofmonth.iname">
+            </div>
+            &lt;!&ndash;<input type="text" class="form-control" id="addModalUser" placeholder="User" name="user" [(ngModel)]="currentTaskofmonth.user">&ndash;&gt;
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addTaskofmonth()">Save</button>
+        </div>
+      </div>&lt;!&ndash; /.modal-content &ndash;&gt;
+    </form>
+    </div>
+    </div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
+</div>&lt;!&ndash; /.modal &ndash;&gt;
+
+<div id="editModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <form>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearCurrentTaskofmonth()"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Edit taskofmonth</h4>
+        </div>
+        <div class="modal-body">
+
+          &lt;!&ndash;<div class="form-group">&ndash;&gt;
+          &lt;!&ndash;<label for="editModalMessage">Message</label>&ndash;&gt;
+          &lt;!&ndash;<input type="text" class="form-control" id="editModalMessage" placeholder="Message" name="message" [(ngModel)]="currentTaskofmonth.message">&ndash;&gt;
+          &lt;!&ndash;</div>&ndash;&gt;
+          &lt;!&ndash;<ul class="list-group">
+            <li class="list-group-item" *ngFor="let item of history">
+              #{{item.id}} {{item.message}} <button type="button" class="btn btn-default btn-xs" (click)="removeTaskofmonthHistory(item)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+
+            </li>
+          </ul>&ndash;&gt;
+
+          &lt;!&ndash;<form class="form-inline">
+            <div class="form-group">
+              <label for="user_id">id</label>
+              <input type="number" class="form-control" id="user_id" name="user_id" placeholder="user id" [(ngModel)]="currentHistory.user.id">
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <input type="text" class="form-control" id="message" name="message" placeholder="" [(ngModel)]="currentHistory.message">
+            </div>
+            <button type="submit" class="btn btn-default" (click)="addTaskofmonthHistory()">Add</button>
+          </form>&ndash;&gt;
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="updateTaskofmonth()">Save</button>
+        </div>
+      </div>&lt;!&ndash; /.modal-content &ndash;&gt;
+    </form>
+  </div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
+</div>&lt;!&ndash; /.modal &ndash;&gt;
+
+<div id="removeModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearCurrentTaskofmonth()"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Remove taskofmonth</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure to remove this taskofmonth?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="removeTaskofmonth()">Remove</button>
+      </div>
+    </div>&lt;!&ndash; /.modal-content &ndash;&gt;
+  </div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
+</div>&lt;!&ndash; /.modal &ndash;&gt;
+
+
+
+
+<div id="taskEditModal" class="modal">
+  <div class="modal-content">
+    <h4>Task Details</h4>
+    <div class="row">
+      <form class="col s12" #taskEditForm="ngForm">
+        &lt;!&ndash;<div class="row">
+          <div class="input-field col s12">
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Name"
+              required
+              minlength="5"
+              #name="ngModel"
+              [(ngModel)]="task.name"
+              [class.valid]="name.valid && (name.dirty || name.touched)"
+              [class.invalid]="name.invalid && (name.dirty || name.touched)"
+            >
+
+          </div>
+        </div>&ndash;&gt;
+        &lt;!&ndash;<div class="row">
+          <div class="input-field col s12">
+            <input
+              id="content"
+              name="content"
+              type="text"
+              placeholder="Content"
+              required
+              minlength="5"
+              #nonce="ngModel"
+              [(ngModel)]="task.content"
+            >
+            <label for="content">Wish Nonce</label>
+          </div>
+        </div>&ndash;&gt;
+        &lt;!&ndash;<div class="row">
+          <div class="input-field col s12">
+            <textarea
+              id="description"
+              name="description"
+              class="materialize-textarea"
+              required
+              minlength="5"
+              #description="ngModel"
+              [(ngModel)]="wish.description"
+            ></textarea>
+            <label for="description">Wish Description</label>
+          </div>
+        </div>&ndash;&gt;
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-action waves-effect waves-green btn-flat" (click)="onCancel()">Cancel</button>
+      &lt;!&ndash;<button class="modal-action waves-effect waves-green btn-flat" (click)="onSave()"
+              [disabled]="taskEditForm.form.invalid">Save
+      </button>&ndash;&gt;
+    </div>
+  </div>-->
+  <div id="removeModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="clearCurrentTaskofmonth()"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Remove taskofmonth</h4>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure to remove this taskofmonth?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="removeTaskofmonth()">Remove</button>
+        </div>
+      </div>&lt;!&ndash; /.modal-content &ndash;&gt;
+    </div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
+  </div>
